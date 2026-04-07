@@ -1,0 +1,35 @@
+import java.util.*;
+public class Solution {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Deque<Integer> window = new ArrayDeque<Integer>();
+        HashMap<Integer, Integer> counts = new HashMap<Integer, Integer>();
+        int n = scanner.nextInt();
+        int m = scanner.nextInt();
+        int maxUnique = 0;
+        for (int i = 0; i < n; i++) {
+            int currentNum = scanner.nextInt();
+            window.addLast(currentNum);
+            if (counts.containsKey(currentNum)) {
+                counts.put(currentNum, counts.get(currentNum) + 1);
+            } else {
+                counts.put(currentNum, 1);
+            }
+            if (window.size() == m) {
+                if (counts.size() > maxUnique) {
+                    maxUnique = counts.size();
+                }
+                if (maxUnique == m) break;
+                int oldest = window.removeFirst();
+                int currentCount = counts.get(oldest);
+                if (currentCount == 1) {
+                    counts.remove(oldest);
+                } else {
+                    counts.put(oldest, currentCount - 1);
+                }
+            }
+        }
+        System.out.println(maxUnique);
+        scanner.close();
+    }
+}
